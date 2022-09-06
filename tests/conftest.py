@@ -14,10 +14,10 @@ def setup(request):
     # chrome driver to invoke browser
     browser = request.config.getoption("browser_name")
     if browser == "chrome":
-        service_obj = Service("C:/Users/shuhfan/Documents/python-selenium/chromedriver.exe")
+        service_obj = Service("drivers/chromedriver.exe")
         driver = webdriver.Chrome(service=service_obj)
     elif browser == "edge":
-        service_obj = Service("C:/Users/shuhfan/Documents/python-selenium/msedgedriver.exe")
+        service_obj = Service("drivers/msedgedriver.exe")
         driver = webdriver.Edge(service=service_obj)
 
     driver.implicitly_wait(5)
