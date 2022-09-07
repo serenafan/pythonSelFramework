@@ -39,6 +39,7 @@ def pytest_addoption(parser):
 def pytest_configure(config):
     config.option.htmlpath = "reports/report.html"
 
+
 @pytest.mark.hookwrapper
 def pytest_runtest_makereport(item):
     """
@@ -54,18 +55,18 @@ def pytest_runtest_makereport(item):
         xfail = hasattr(report, 'wasxfail')
         if (report.skipped and xfail) or (report.failed and not xfail):
             file_name = report.nodeid[6:].replace("::", "_") + ".png"
-            file_path = 'screenshots/' + file_name
+            file_path = 'reports/' + file_name
             _capture_screenshot(file_path)
             if file_name:
                 html = '<div><img src="%s" alt="screenshot" style="width:304px;height:228px;" ' \
-                       'onclick="window.open(this.src)" align="right"/></div>' % ("../" + file_path)
+                       'onclick="window.open(this.src)" align="right"/></div>' % file_name
                 extra.append(pytest_html.extras.html(html))
         report.extra = extra
 
 
 def _capture_screenshot(name):
     currentDirName = os.path.dirname(__file__)
-    filepath = os.path.join(currentDirName, '..', 'screenshots/')
+    filepath = os.path.join(currentDirName, '..', 'reports/')
     if not os.path.exists(filepath):
         os.mkdir(filepath)
     driver.get_screenshot_as_file(name)
