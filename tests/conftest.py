@@ -18,7 +18,6 @@ def setup(request):
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("no-sandbox")
     chrome_options.add_argument("--disable-extensions")
-    chrome_options.add_argument("--headless")
     if browser == "chrome":
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), chrome_options=chrome_options)
         log.info("browser initialized")
