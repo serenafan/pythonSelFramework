@@ -8,7 +8,7 @@ trigger:
 
 pool:
   name: Azure Pipelines
-  vmImage: 'Ubuntu-22.04'
+  vmImage: 'ubuntu-20.04'
   
 steps:
 
