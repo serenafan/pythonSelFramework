@@ -5,12 +5,12 @@ from selenium.webdriver.support.wait import WebDriverWait
 from utilities.BaseClass import BaseClass
 from pageObjects.HomePage import HomePage
 from pageObjects.CheckoutPage import CheckoutPage
+from utilities.Logger import log
 
 
 class TestOne(BaseClass):
 
     def test_e2e(self):
-        log = self.getLogger()
         self.driver.get("http://rahulshettyacademy.com/angularpractice/")
         log.info("click on shop item")
         homePage = HomePage(self.driver)

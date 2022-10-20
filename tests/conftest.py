@@ -4,7 +4,8 @@ from datetime import datetime
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-
+from webdriver_manager.chrome import ChromeDriverManager
+from utilities.Logger import log
 driver = None
 
 
@@ -14,8 +15,8 @@ def setup(request):
     # chrome driver to invoke browser
     browser = request.config.getoption("browser_name")
     if browser == "chrome":
-        service_obj = Service("drivers/chromedriver.exe")
-        driver = webdriver.Chrome(service=service_obj)
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+        log.info("browser initialized")
     elif browser == "edge":
         service_obj = Service("drivers/msedgedriver.exe")
         driver = webdriver.Edge(service=service_obj)

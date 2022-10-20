@@ -8,32 +8,37 @@ trigger:
 
 pool:
   name: Azure Pipelines
-  vmImage: 'windows-latest'
+  vmImage: 'Ubuntu-22.04'
   
 steps:
-- task: UsePythonVersion@0
-  displayName: 'Use Python 3.10'
-  inputs:
-    versionSpec: 3.10
 
 - script: |
-   python -m pip install -U pip
    pip install poetry
    poetry install
    
   displayName: 'Install software'
 
-- script: 'poetry run py.test --html=report.html '
+- script: 'poetry run pytest -s'
   displayName: 'run e2e tests'
 
-- task: PublishPipelineArtifact@1
-  displayName: 'Publish Pipeline Artifact'
-  inputs:
-    targetPath: 'D:\a\1\s\reports'
+- task: CopyFiles@2
+  displayName: 'Copy test results'
   condition: succeededOrFailed()
+  inputs:
+    sourceFolder: $(Build.SourcesDirectory)/ui/test_results
+    contents: '**'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
 
-- task: JakubRumpca.azure-pipelines-html-report.PublishHtmlReport.PublishHtmlReport@1
-  displayName: 'Publish Html Report'
-  inputs:
-    reportDir: 'D:\a\1\s\reports\report.html'
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Test Run Artifacts'
   condition: succeededOrFailed()
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: 'Test Run Artifacts'
+
+- task: PublishTestResults@2
+  displayName: 'Publish JUnit Report'
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFormat: Junit
+    testResultsFiles: '$(Build.SourcesDirectory)/ui/test_results/reports/report.xml'
