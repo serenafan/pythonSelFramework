@@ -13,6 +13,7 @@ pool:
 steps:
 
 - script: |
+   sudo apt install gnome-keyring   
    pip install poetry
    poetry install
    
@@ -25,7 +26,7 @@ steps:
   displayName: 'Copy test results'
   condition: succeededOrFailed()
   inputs:
-    sourceFolder: $(Build.SourcesDirectory)/ui/test_results
+    sourceFolder: $(Build.SourcesDirectory)/reports
     contents: '**'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
 
@@ -41,4 +42,4 @@ steps:
   condition: succeededOrFailed()
   inputs:
     testResultsFormat: Junit
-    testResultsFiles: '$(Build.SourcesDirectory)/ui/test_results/reports/report.xml'
+    testResultsFiles: '$(Build.SourcesDirectory)/reports/report.xml'
