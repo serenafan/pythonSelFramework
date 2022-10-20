@@ -5,6 +5,7 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
 from utilities.Logger import log
 driver = None
 
@@ -14,8 +15,10 @@ def setup(request):
     global driver
     # chrome driver to invoke browser
     browser = request.config.getoption("browser_name")
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("no-sandbox")
     if browser == "chrome":
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), chrome_options=chrome_options)
         log.info("browser initialized")
     elif browser == "edge":
         service_obj = Service("drivers/msedgedriver.exe")
